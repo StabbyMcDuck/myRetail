@@ -6,5 +6,5 @@ Stack
 * Cassandra 
 
 Versions
-* Ruby 2.6.2
+* Ruby 2.6.4
 * Rails 5.2.3
