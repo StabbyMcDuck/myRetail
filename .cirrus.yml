@@ -1,0 +1,10 @@
+container:
+  image: ruby:latest
+
+rspec_task:
+  install_bundler_script: gem install bundler
+  bundle_cache:
+    folder: /usr/local/bundle
+    fingerprint_script: echo $RUBY_VERSION && cat Gemfile && cat Gemfile.lock
+    populate_script: bundle install
+  rspec_script: bundle exec rspec
