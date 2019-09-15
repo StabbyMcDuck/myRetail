@@ -5,7 +5,8 @@ module RedSky
     end
 
     if json
-      {name: json.dig("product", "item", "product_description", "title")}
+
+      {id: id, name: json.dig("product", "item", "product_description", "title")}
     end
   end
 

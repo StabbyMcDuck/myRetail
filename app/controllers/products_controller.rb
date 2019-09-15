@@ -1,14 +1,14 @@
 class ProductsController < ApplicationController
-  before_action :set_product_price, only: [:show]
+  before_action :set_product, only: [:show]
 
   # GET /product_prices/1
   def show
-    render json: @product_price
+    render json: @product
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_product_price
-      @product_price = ProductPrice.find(params[:id])
+    def set_product
+      @product = Product.find(params[:id])
     end
 end
