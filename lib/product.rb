@@ -1,7 +1,10 @@
 require 'red_sky'
 
 module Product
-  def self.find(id)
+  def self.find(formatted_id)
+    # make sure the id stays formatted as an int rather than a string
+    id = formatted_id.to_i
+
     json = RedSky.product(id)
 
     if json

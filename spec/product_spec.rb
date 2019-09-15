@@ -6,7 +6,7 @@ RSpec.describe Product do
     context 'with price' do
       it 'returns a combined name and price for a product id' do
         id = 13860428
-        value = BigDecimal::new("13.49")
+        value = BigDecimal("13.49")
         currency_code = 'USD'
 
         ProductPrice.create(product_id: id, value: value, currency_code: currency_code)
