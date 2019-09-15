@@ -1,5 +1,10 @@
 container:
   image: ruby:latest
+  additional_containers:
+    - name: cassandra
+      image: cassandra:latest
+      port: 9042
+      memory: 12
 
 rspec_task:
   install_bundler_script: gem install bundler
@@ -7,4 +12,7 @@ rspec_task:
     folder: /usr/local/bundle
     fingerprint_script: echo $RUBY_VERSION && cat Gemfile && cat Gemfile.lock
     populate_script: bundle install
-  rspec_script: bundle exec rspec
+  rspec_script: |
+    RAILS_ENV=test rake cequel:keyspace:create
+    RAILS_ENV=test rake cequel:migrate
+    bundle exec rspec
