@@ -9,6 +9,10 @@ gem 'rails', '~> 5.2.3'
 gem 'cequel'
 # Rails 5 Cassandra NoSQL xml serializer
 gem 'activemodel-serializers-xml'
+# http/rest api library
+gem 'faraday', '~> 0.15.4'
+# json middleware for faraday
+gem 'faraday_middleware', '~> 0.13.1'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

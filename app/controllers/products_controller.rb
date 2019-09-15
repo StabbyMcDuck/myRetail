@@ -1,4 +1,4 @@
-class ProductPricesController < ApplicationController
+class ProductsController < ApplicationController
   before_action :set_product_price, only: [:show]
 
   # GET /product_prices/1

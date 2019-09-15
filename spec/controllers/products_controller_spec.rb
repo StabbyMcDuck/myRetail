@@ -23,36 +23,19 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe ProductPricesController, type: :controller do
+RSpec.describe ProductsController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # ProductPrice. As you add validations to ProductPrice, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {product_id: 13860428, value: 13.49, currency_code: "USD"}
   }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ProductPricesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
-  describe "GET #index" do
-    it "returns a success response" do
-      product_price = ProductPrice.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
 
   describe "GET #show" do
     it "returns a success response" do
       product_price = ProductPrice.create! valid_attributes
-      get :show, params: {id: product_price.to_param}, session: valid_session
+      get :show, params: {id: product_price.to_param}
       expect(response).to be_successful
     end
   end
