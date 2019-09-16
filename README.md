@@ -101,3 +101,4 @@ bundle exec rspec
 ## Workflow
 
 All new code must go through a standard [pull request](https://help.github.com/en/articles/about-pull-requests) process.  Before being able to merge PRs the Cirrus CI build must pass.  
+
