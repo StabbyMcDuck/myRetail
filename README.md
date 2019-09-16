@@ -1,9 +1,9 @@
 # myRetail
 myRetail is an API with a Cassandra NoSQL database
 
-## Cirrus CI Status
+## Status
 [![Build Status](https://api.cirrus-ci.com/github/StabbyMcDuck/myRetail.svg)](https://cirrus-ci.com/github/StabbyMcDuck/myRetail)
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/2e8fc2fe4f3a071bc0e4/maintainability)](https://codeclimate.com/github/StabbyMcDuck/myRetail/maintainability)
 
 ## Stack
 * [Ruby](https://www.ruby-lang.org/en/)
@@ -14,6 +14,9 @@ myRetail is an API with a Cassandra NoSQL database
 ## Versions
 * Ruby 2.6.4
 * Rails 5.2.3
+
+## CI
+* [Cirrus CI](https://cirrus-ci.org/)
 
 ## Pre-reqs
 You will need to have a few things already downloaded to run this Rails project.
@@ -94,3 +97,7 @@ This project uses [RSpec](https://rspec.info/) for testing. To run all tests in 
 ```ruby
 bundle exec rspec
 ```
+
+## Workflow
+
+All new code must go through a standard [pull request](https://help.github.com/en/articles/about-pull-requests) process.  Before being able to merge PRs the 
