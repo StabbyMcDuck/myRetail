@@ -39,4 +39,29 @@ RSpec.describe ProductsController, type: :controller do
       expect(response).to be_successful
     end
   end
+
+  describe "PUT #update" do
+    it "returns a success response" do
+      product_price = ProductPrice.create! valid_attributes
+      value = 14.99
+      currency_code = "USD"
+      put :update, params: {id: product_price.to_param, current_price: {value: value, currency_code: currency_code}}
+      expect(response).to be_successful
+    end
+
+    it "returns errors without a value or currency code" do
+      product_price = ProductPrice.create! valid_attributes
+
+      put :update, params: {id: product_price.to_param, current_price: {val: 123}}
+
+      # 422: unprocessable entity
+      expect(response.status).to eq(422)
+
+      json = JSON.parse(response.body)
+      expect(json).to have_key("errors")
+      errors = json["errors"]
+      expect(errors).to include({"message" => "is not a number", "pointer" => "/current_price/value"})
+      expect(errors).to include({"message" => "is not included in the list", "pointer" => "/current_price/currency_code"})
+    end
+  end
 end
