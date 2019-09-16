@@ -60,13 +60,13 @@ rvm use 2.6.4
 
 Now that you have the right version of Ruby, you can install Rails, the Ruby web framework. 
 
-```ruby
+```sh
 gem install rails -v 5.2.3
 ```
 
 Next you will need to install all of the libraries - get a drink, this will take awhile ☕️
 
-```ruby
+```sh
 bundle install
 ```
 
@@ -74,13 +74,30 @@ bundle install
 
 Cassandra will need to be installed so you can run the database locally.  
 
-```ruby
+```sh
 brew install cassandra
 ```
+
 
 ## Run Project
 
 Now that you have your system properly set up, you can `cd myRetail` and get to the project root directory.
+
+### Seed database
+
+Seed the database by running
+
+```sh
+rake cequel:keyspace:create
+rake cequel:migrate
+rails c
+```
+
+```irb
+ProductPrice.create!(product_id: 13860428, value: BigDecimal("13.99"), currency_code: "USD")
+```
+
+### Run Server
 
 From there you can run the following command to start the project server locally:
 
@@ -90,7 +107,67 @@ rails s
 
 It defaults to running it in `localhost:3000`, so point your browser there!
 
+### API
+
+This project has a RESTful API that accepts product ids from 
+Red Sky: http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics
+
+To use this API, inser
+
+* `GET /products/ID`
+   Returns the product id, name, and current price (value and currency code) of product with ID
+   ```json 
+   {
+     "id": 13860428,
+     "name": "The Big Lebowski (Blu-ray)",
+     "current_price": {
+       "value": "13.99",
+       "currency_code": "USD"
+     }
+   }
+   ```
+   
+   Curl: `curl -X GET -H "Content-Type: application/json" http://localhost:3000/products/13860428`
+* `PUT /products/ID`
+  Updates the price of product with ID
+  
+  Request
+  
+  ```json
+  {
+    "id": 13860428,
+    "current_price": {
+      "value": "14.99",
+      "currency_code": "USD"
+    }
+  }
+  ```
+  
+  Response
+  
+  ```json
+  {
+    "id": 13860428,
+    "name": "The Big Lebowski (Blu-ray)",
+    "current_price": {
+      "value": "14.99",
+      "currency_code": "USD"
+    }
+  }
+  ```
+  
+  Curl: `curl -X PUT -H "Content-Type: application/json" -d '{"current_price":{"value":"14.99","currency_code":"USD"}}' http://localhost:3000/products/13860428`
+
 ## Run Tests
+
+### Create and migrate test database
+
+```sh
+RAILS_ENV=test rake cequel:keyspace:create
+RAILS_ENV=test rake cequel:migrate
+```
+
+### Run rspec
 
 This project uses [RSpec](https://rspec.info/) for testing. To run all tests in this project's test suite run:
 
