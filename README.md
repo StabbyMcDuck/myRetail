@@ -177,3 +177,10 @@ bundle exec rspec
 
 All new code must go through a standard [pull request](https://help.github.com/en/articles/about-pull-requests) process.  Before being able to merge PRs the Cirrus CI build must pass.  
 
+## Future Considerations
+
+As this is a straight-forward proof of concept, it isn't a perfect solution. Some considerations for putting this to production use are:
+
+* It always hits the RedSky API, there is no caching.  Caching will elliminate the round trip to RedSky and reduce the load from API calls on RedSky. However, if there is a cache then you need to have a way to invalidate the cache, or else your database has out of date information.  
+
+* RedSky returns a great deal of information, far more than what this API uses.  A more precise query would lessen the load from RedSky and make decoding the information faster. 
