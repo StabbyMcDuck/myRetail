@@ -48,7 +48,7 @@ RSpec.describe "Products", type: :request do
         get "/products/#{id}"
 
         expect(response.status).to eq(404)
-        expect(response.body).to eq({id: id}.to_json)
+        expect(response.body).to eq({code: 404, id: id}.to_json)
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe "Products", type: :request do
       get "/products/#{id}"
 
       expect(response.status).to eq(404)
-      expect(response.body).to eq({id: id}.to_json)
+      expect(response.body).to eq({code: 404, id: id}.to_json)
     end
   end
 

@@ -38,30 +38,62 @@ RSpec.describe ProductsController, type: :controller do
       get :show, params: {id: product_price.to_param}
       expect(response).to be_successful
     end
+
+    it "returns a not found response" do
+      id = 15117729 # bad id
+
+      get :show, params: {id: id}
+      expect(response.status).to eq(404)
+
+      json = JSON.parse(response.body)
+      expect(json).to eq({"code" => 404, "id" => id})
+    end
   end
 
   describe "PUT #update" do
-    it "returns a success response" do
-      product_price = ProductPrice.create! valid_attributes
-      value = 14.99
-      currency_code = "USD"
-      put :update, params: {id: product_price.to_param, current_price: {value: value, currency_code: currency_code}}
-      expect(response).to be_successful
+    context "with redsky product" do
+      it "returns a success response" do
+        product_price = ProductPrice.create! valid_attributes
+        value = 14.99
+        currency_code = "USD"
+        put :update, params: {id: product_price.to_param, current_price: {value: value, currency_code: currency_code}}
+        expect(response).to be_successful
+      end
+
+      it "returns errors without a value or currency code" do
+        product_price = ProductPrice.create! valid_attributes
+
+        put :update, params: {id: product_price.to_param, current_price: {val: 123}}
+
+        # 422: unprocessable entity
+        expect(response.status).to eq(422)
+
+        json = JSON.parse(response.body)
+        expect(json["code"]).to eq(422)
+        expect(json["id"]).to eq(product_price.product_id)
+        expect(json).to have_key("errors")
+        errors = json["errors"]
+        expect(errors).to include({"message" => "is not a number", "pointer" => "/current_price/value"})
+        expect(errors).to include({"message" => "is not included in the list", "pointer" => "/current_price/currency_code"})
+      end
+
     end
 
-    it "returns errors without a value or currency code" do
-      product_price = ProductPrice.create! valid_attributes
+    context "without redsky product" do
+      it "returns not found, 404" do
+        value = 14.99
+        currency_code = "USD"
+        id = 15117729
+        put :update, params: {id: id, current_price: {value: value, currency_code: currency_code}}
 
-      put :update, params: {id: product_price.to_param, current_price: {val: 123}}
+        # 404 not found
+        expect(response.status).to eq(404)
+        json = JSON.parse(response.body)
+        expect(json).to eq({"code" => 404, "id" => id})
 
-      # 422: unprocessable entity
-      expect(response.status).to eq(422)
-
-      json = JSON.parse(response.body)
-      expect(json).to have_key("errors")
-      errors = json["errors"]
-      expect(errors).to include({"message" => "is not a number", "pointer" => "/current_price/value"})
-      expect(errors).to include({"message" => "is not included in the list", "pointer" => "/current_price/currency_code"})
+        # shouldn't find anything in the database if 404 not found
+        expect { ProductPrice.find(id) }.to raise_error(Cequel::Record::RecordNotFound)
+      end
     end
   end
 end
